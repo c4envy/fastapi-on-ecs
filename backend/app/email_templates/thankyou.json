@@ -1,0 +1,9 @@
+{
+    "Template": {
+      "TemplateName": "ThankYouForPurchase",
+      "SubjectPart": "Thank You for Your Purchase of {{total_shares}} Shares!",
+      "TextPart": "Hello {{user_name}},\n\nThank you for your recent purchase of {{total_shares}} shares on BeatStake. We are thrilled to have you as part of our community.\n\nIf you have any questions don't hesitate to contact us.\n\nThank you for your trust in us!\n\nBest regards,\nThe BeatStake Team",
+      "HtmlPart": "<html><head></head><body><h1>Thank You for Your Purchase, {{user_name}}!</h1><p>We are thrilled to have you as part of our community. Thank you for your recent purchase of {{total_shares}} shares for <strong>Total Amount</strong> : ${{total_price}}</p><p>If you have any questions or need further assistance, please don't hesitate to contact us.</p><p>Thank you for your trust in us!</p><p>Best regards,<br/>BeatStake Team</p></body></html>"
+    }
+  }
+  

@@ -1,0 +1,9 @@
+{
+    "Template": {
+      "TemplateName": "WelcomeTemplate",
+      "SubjectPart": "Welcome to BeatStake, {{name}}!",
+      "TextPart": "Hi {{name}},\n\nWelcome to BeatStake, the premier platform for music lovers and creators! We're thrilled to have you on board.\n\nAs a new member, you can now explore and invest in your favorite music, connect with artists, and much more.\n\nIf you have any questions, feel free to reach out to our support team at support@beatstake.com.\n\nHappy exploring!\n\nBest regards,\nThe BeatStake Team",
+      "HtmlPart": "<html><body><h1>Welcome to BeatStake, {{name}}!</h1><p>Hi {{name}},</p><p>Welcome to BeatStake, the premier platform for music lovers and creators! We're thrilled to have you on board.</p><p>As a new member, you can now explore and invest in your favorite music, connect with artists, and much more.</p><p>If you have any questions, feel free to reach out to our support team at <a href='mailto:support@beatstake.com'>support@beatstake.com</a>.</p><p>Happy exploring!</p><p>Best regards,<br>The BeatStake Team</p></body></html>"
+    }
+  }
+  

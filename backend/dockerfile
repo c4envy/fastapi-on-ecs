@@ -1,0 +1,30 @@
+# Use the official Python image from the Docker Hub
+FROM python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Copy tidal token for now
+COPY tidal_token.json .
+
+# Copy ENV var
+COPY env .
+
+# Copy app directory
+Add . /app
+
+# Install the dependencies
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Make port 80 available to the world outside this container
+EXPOSE 8080
+
+# Copy the FastAPI app into the container
+# COPY . .
+
+# Command to run the FastAPI application using uvicorn
+CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
+

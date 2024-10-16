@@ -1,0 +1,400 @@
+from sqlite3 import Timestamp
+from typing import Optional
+from uuid import UUID
+from pydantic import BaseModel
+from datetime import datetime, timezone
+
+    
+class PaymentMethod(BaseModel):
+    id: str
+    object: str
+    billing_details: dict
+    card: dict
+    created: int
+    customer: str
+    livemode: bool
+    metadata: dict
+    type: str
+ 
+class PaymentMethodData(BaseModel):
+    card: dict
+    billing_details: dict
+    metadata: dict
+
+class PaymentIntentRequest(BaseModel):
+    amount: int
+    currency: str
+    payment_method_data: PaymentMethod
+    customer_name: str
+    off_session: bool
+    confirm: bool
+    expand: list
+    
+class PaymentIntentResponse(BaseModel):
+    id: str
+    object: str
+    amount: int
+    amount_capturable: int
+    amount_received: int
+    application: str
+    application_fee_amount: int
+    canceled_at: int
+    cancellation_reason: str
+    capture_method: str
+    charges: dict
+    client_secret: str
+    confirmation_method: str
+    created: int
+    currency: str
+    customer: str
+    description: str
+    invoice: str
+    livemode: bool
+    metadata: dict
+    next_action: dict
+    on_behalf_of: str
+    payment_method: str
+    payment_method_options: dict
+    payment_method_types: list
+    receipt_email: str
+    review: str
+    setup_future_usage: str
+    shipping: dict
+    source: str
+    statement_descriptor: str
+    statement_descriptor_suffix: str
+    status: str
+    transfer_data: dict
+    transfer_group: str
+ 
+
+ 
+class PaymentMethodResponse(BaseModel):
+ id: str
+ object: str
+ billing_details: dict
+ card: dict
+ created: int
+ customer: str
+ livemode: bool
+ metadata: dict
+ type: str
+     
+class SetupIntentRequest(BaseModel):
+    customer: str
+    payment_method: str
+    usage: str
+    metadata: dict
+    
+class SetupIntentResponse(BaseModel):
+    id: str
+    object: str
+    application: str
+    cancellation_reason: str
+    client_secret: str
+    created: int
+    customer: str
+    description: str
+    last_setup_error: str
+    livemode: bool
+    metadata: dict
+    next_action: dict
+    on_behalf_of: str
+    payment_method: str
+    payment_method_types: list
+    single_use_mandate: str
+    status: str
+    usage: str
+    
+class CustomerRequest(BaseModel):
+    email: str
+    payment_method: str
+    invoice_settings: dict
+    metadata: dict
+    name: str
+    phone: str
+    preferred_locales: list
+    shipping: dict
+    tax_exempt: str
+    
+class CustomerResponse(BaseModel):
+    id: str
+    object: str
+    address: dict
+    balance: int
+    created: int
+    currency: str
+    default_source: str
+    delinquent: bool
+    description: str
+    discount: dict
+    email: str
+    invoice_prefix: str
+    invoice_settings: dict
+    livemode: bool
+    metadata: dict
+    name: str
+    next_invoice_sequence: int
+    phone: str
+    preferred_locales: list
+    shipping: dict
+    tax_exempt: str
+    
+class SubscriptionRequest(BaseModel):
+    customer: str
+    items: list
+    metadata: dict
+    payment_behavior: str
+    expand: list
+    
+class SubscriptionResponse(BaseModel):
+    id: str
+    object: str
+    application_fee_percent: int
+    billing_cycle_anchor: int
+    billing_thresholds: dict
+    cancel_at: int
+    cancel_at_period_end: bool
+    canceled_at: int
+    collection_method: str
+    created: int
+    current_period_end: int
+    current_period_start: int
+    customer: str
+    days_until_due: int
+    default_payment_method: str
+    default_source: str
+    default_tax_rates: list
+    discount: dict
+    ended_at: int
+    items: dict
+    latest_invoice: str
+    livemode: bool
+    metadata: dict
+    next_pending_invoice_item_invoice: int
+    pause_collection: dict
+    pending_invoice_item_interval: dict
+    pending_setup_intent: str
+    pending_update: str
+    schedule: str
+    start_date: int
+    status: str
+    tax_percent: int
+    trial_end: int
+    trial_start: int
+    
+class CheckoutSessionRequest(BaseModel):
+    customer: str
+    payment_method_types: list
+    line_items: list
+    mode: str
+    success_url: str
+    cancel_url: str
+    payment_intent_data: dict
+    subscription_data: dict
+    metadata: dict
+    locale: str
+    submit_type: str
+    billing_address_collection: str
+    shipping_address_collection: dict
+    customer_email: str
+    automatic_tax: dict
+    coupon: str
+    client_reference_id: str
+    customer_update: str
+    payment_method_options: dict
+    payment_method: str
+    setup_intent: str
+    shipping: dict
+    submit: str
+    subscription: str
+    tax_id: str
+    tax_percent: int
+    trial_from_plan: str
+    url: str
+    
+class CheckoutSessionResponse(BaseModel):
+    id: str
+    object: str
+    allow_promotion_codes: bool
+    amount_subtotal: int
+    amount_total: int
+    billing_address_collection: str
+    cancel_url: str
+    client_reference_id: str
+    currency: str
+    customer: str
+    customer_email: str
+    livemode: bool
+    locale: str
+    metadata: dict
+    mode: str
+    payment_intent: str
+    payment_method_types: list
+    payment_status: str
+    setup_intent: str
+    shipping: dict
+    shipping_address_collection: dict
+    submit_type: str
+    subscription: str
+    success_url: str
+    total_details: dict
+    url: str
+    
+    
+class PriceRequest(BaseModel):
+    product: str
+    unit_amount: int
+    currency: str
+    recurring: dict
+    metadata: dict
+    nickname: str
+    product_data: dict
+    tax_behavior: str
+    transform_quantity: str
+    tiers_mode: str
+    tiers: list
+    billing_scheme: str
+    lookup_key: str
+    expand: list
+    
+class PriceResponse(BaseModel):
+    id: str
+    object: str
+    active: bool
+    billing_scheme: str
+    created: int
+    currency: str
+    livemode: bool
+    lookup_key: str
+    metadata: dict
+    nickname: str
+    product: str
+    recurring: dict
+    tiers_mode: str
+    transform_quantity: str
+    unit_amount: int
+    unit_amount_decimal: str
+    
+class ProductRequest(BaseModel):
+    name: str
+    active: bool
+    attributes: list
+    caption: str
+    deactivate_on: list
+    description: str
+    images: list
+    metadata: dict
+    package_dimensions: dict
+    shippable: bool
+    statement_descriptor: str
+    unit_label: str
+    url: str
+    expand: list
+    
+class ProductResponse(BaseModel):
+    id: str
+    object: str
+    active: bool
+    attributes: list
+    caption: str
+    created: int
+    deactivate_on: list
+    description: str
+    images: list
+    livemode: bool
+    metadata: dict
+    name: str
+    package_dimensions: dict
+    shippable: bool
+    statement_descriptor: str
+    unit_label: str
+    updated: int
+    url: str
+    
+class TaxRateRequest(BaseModel):
+    display_name: str
+    inclusive: bool
+    jurisdiction: str
+    percentage: float
+    expand: list
+    
+class TaxRateResponse(BaseModel):
+    id: str
+    object: str
+    active: bool
+    created: int
+    description: str
+    display_name: str
+    inclusive: bool
+    jurisdiction: str
+    livemode: bool
+    metadata: dict
+    percentage: float
+    expand: list
+    
+class PaymentRequest(BaseModel):
+    amount: int
+    currency: str
+    payment_method: str
+    expand: list
+    
+class PaymentResponse(BaseModel):
+    id: str
+    object: str
+    amount: int
+    amount_capturable: int
+    amount_received: int
+    application: str
+    application_fee_amount: int
+    canceled_at: int
+    cancellation_reason: str
+    capture_method: str
+    charges: dict
+    client_secret: str
+    confirmation_method: str
+    created: int
+    currency: str
+    customer: str
+    description: str
+    invoice: str
+    livemode: bool
+    metadata: dict
+    next_action: dict
+    on_behalf_of: str
+    payment_method: str
+    payment_method_options: dict
+    payment_method_types: list
+    receipt_email: str
+    review: str
+    setup_future_usage: str
+    shipping: dict
+    source: str
+    statement_descriptor: str
+    statement_descriptor_suffix: str
+    status: str
+    transfer_data: dict
+    transfer_group: str
+    
+class TaxRate(BaseModel):
+    display_name: str
+    percentage: float
+    
+class StripeProductModel(BaseModel):
+  id: UUID
+  active: bool = False
+  created: Timestamp = datetime.utcnow().replace(tzinfo=timezone.utc).timestamp()
+  default_price: Optional[float]
+  description: Optional[str]
+  images: Optional[list]
+  features: Optional[list]
+  metadata: Optional[dict]
+  name: str
+  shippable: bool = False
+  statement_descriptor: str
+  tax_code: Optional[int]
+  unit_label: str
+  updated: Optional[Timestamp]
+  url: Optional[str]
+
+     
