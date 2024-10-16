@@ -38,5 +38,3 @@ deploy-all:
 	cd frontend && sh deploy.sh
 	cd backend && sh deploy.sh
 
-refresh-service:
-	cd infra/app && terraform init && terraform refresh 
