@@ -7,5 +7,5 @@ output "alb_dns_name" {
 # Output the API Gateway URL for FastAPI
 output "fastapi_gateway_url" {
   description = "The URL for the FastAPI application via API Gateway."
-  value       = aws_api_gateway_deployment.fastapi_deployment.invoke_url
+  value       = "${aws_api_gateway_stage.prod.invoke_url}"
 }

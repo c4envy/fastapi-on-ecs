@@ -253,7 +253,6 @@ resource "aws_api_gateway_integration" "fastapi_proxy" {
 
 resource "aws_api_gateway_deployment" "fastapi_deployment" {
   rest_api_id = aws_api_gateway_rest_api.fastapi_gateway.id
-  stage_name  = "prod"
   
   triggers = {
     redeployment = sha1(jsonencode([
@@ -274,6 +273,27 @@ resource "aws_api_gateway_deployment" "fastapi_deployment" {
   ]
 }
 
+resource "aws_api_gateway_stage" "prod" {
+  deployment_id = aws_api_gateway_deployment.fastapi_deployment.id
+  rest_api_id   = aws_api_gateway_rest_api.fastapi_gateway.id
+  stage_name    = "prod"
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_gateway.arn
+    format          = jsonencode({
+      requestId               = "$context.requestId"
+      sourceIp                = "$context.identity.sourceIp"
+      requestTime             = "$context.requestTime"
+      protocol                = "$context.protocol"
+      httpMethod              = "$context.httpMethod"
+      resourcePath            = "$context.resourcePath"
+      routeKey                = "$context.routeKey"
+      status                  = "$context.status"
+      responseLength          = "$context.responseLength"
+      integrationErrorMessage = "$context.integrationErrorMessage"
+    })
+  }
+}
 # ECS Cluster Definition
 resource "aws_ecs_cluster" "this" {
   name = "${var.app_name}-ecs-cluster"
@@ -304,4 +324,54 @@ resource "aws_security_group" "ecs" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_cloudwatch_log_group" "api_gateway" {
+  name              = "/aws/api_gateway/${aws_api_gateway_rest_api.fastapi_gateway.name}"
+  retention_in_days = 30
+}
+
+resource "aws_iam_role" "cloudwatch" {
+  name = "api_gateway_cloudwatch_global"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "apigateway.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "cloudwatch" {
+  name = "default"
+  role = aws_iam_role.cloudwatch.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:PutLogEvents",
+          "logs:GetLogEvents",
+          "logs:FilterLogEvents"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_api_gateway_account" "this" {
+  cloudwatch_role_arn = aws_iam_role.cloudwatch.arn
 }
